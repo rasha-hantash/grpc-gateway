@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+// The refund service definition.
+service RefundService {
+    // Add a user
+    rpc AddUser(AddUserRequest) returns (User){
+        option (google.api.http)= {
+            get: "/api/users"
+        };
+    }
+
+    // Lists users
+    rpc ListUser(ListUsersRequest) returns (stream User){
+        option (google.api.http)= {
+            get: "/api/v1/users"
+        };
+    }
+    rpc CreateUserRefund(UserRefundRequest) returns (User){
+        option (google.api.http)= {
+            get: "/api/v1/createRefund/{user.id}/{refundItemCost}"
+          
+        };
+    }
+    rpc UpdateUserBalance(UserBalanceRequest) returns (User){
+        option (google.api.http)= {
+            get: "/api/v1/updateBalance/{user.id}/{balance}"
+        
+        };
+    }
+    rpc RedeemRewards(UserRewardsRequest) returns (User){
+        option (google.api.http)= {
+            get: "/api/redeemRewards/{user.id}/{redemption}"
+           
+        };
+    }
+}
+
+message AddUserRequest{}
+
+message ListUsersRequest{}
+
+message UserRefundRequest{
+    User user = 1;
+    int32 refundItemCost =2;
+}
+
+message UserBalanceRequest{
+    User user =1;
+    int32 balance = 2;
+}
+
+message UserRewardsRequest{
+    User user =1;
+    int32 redemption = 2;
+}
+
+message User {
+    string id = 1;
+    int32 accountBalance = 2;
+}
+

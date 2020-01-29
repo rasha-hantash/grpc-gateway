@@ -1,0 +1,223 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "rewardsrefund.proto",
+    "version": "version not set"
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/redeemRewards/{user.id}/{redemption}": {
+      "get": {
+        "operationId": "RedeemRewards",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "user.id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "redemption",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "user.accountBalance",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "RefundService"
+        ]
+      }
+    },
+    "/api/users": {
+      "get": {
+        "summary": "Add a user",
+        "operationId": "AddUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        },
+        "tags": [
+          "RefundService"
+        ]
+      }
+    },
+    "/api/v1/createRefund/{user.id}/{refundItemCost}": {
+      "get": {
+        "operationId": "CreateUserRefund",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "user.id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "refundItemCost",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "user.accountBalance",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "RefundService"
+        ]
+      }
+    },
+    "/api/v1/updateBalance/{user.id}/{balance}": {
+      "get": {
+        "operationId": "UpdateUserBalance",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "user.id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "balance",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "user.accountBalance",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "RefundService"
+        ]
+      }
+    },
+    "/api/v1/users": {
+      "get": {
+        "summary": "Lists users",
+        "operationId": "ListUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.(streaming responses)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "$ref": "#/definitions/User"
+                },
+                "error": {
+                  "$ref": "#/definitions/runtimeStreamError"
+                }
+              },
+              "title": "Stream result of User"
+            }
+          }
+        },
+        "tags": [
+          "RefundService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "accountBalance": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "type_url": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "runtimeStreamError": {
+      "type": "object",
+      "properties": {
+        "grpc_code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "http_code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "http_status": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}
