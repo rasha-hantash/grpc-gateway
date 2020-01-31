@@ -21,7 +21,7 @@ func (b *Backend) AddUser(ctx context.Context, _ *pb.AddUserRequest) (*pb.User, 
 
 
 // ListUsers lists all users in the store.
-func (b *Backend) ListUsers( _ *pb.ListUsersRequest, srv pb.RefundService_ListUserServer)  error{
+func (b *Backend) ListUser( _ *pb.ListUsersRequest, srv pb.RefundService_ListUserServer)  error{
 	//b.mu.RLock ??
 
 	for _, user := range b.users {

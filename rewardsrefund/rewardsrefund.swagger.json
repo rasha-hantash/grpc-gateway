@@ -13,6 +13,7 @@
   "paths": {
     "/api/redeemRewards/{user.id}/{redemption}": {
       "get": {
+        "summary": "Redeem Rewards",
         "operationId": "RedeemRewards",
         "responses": {
           "200": {
@@ -50,7 +51,7 @@
       }
     },
     "/api/users": {
-      "get": {
+      "post": {
         "summary": "Add a user",
         "operationId": "AddUser",
         "responses": {
@@ -61,13 +62,24 @@
             }
           }
         },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AddUserRequest"
+            }
+          }
+        ],
         "tags": [
           "RefundService"
         ]
       }
     },
     "/api/v1/createRefund/{user.id}/{refundItemCost}": {
-      "get": {
+      "post": {
+        "summary": "Create user refund",
         "operationId": "CreateUserRefund",
         "responses": {
           "200": {
@@ -92,11 +104,12 @@
             "format": "int32"
           },
           {
-            "name": "user.accountBalance",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserRefundRequest"
+            }
           }
         ],
         "tags": [
@@ -106,6 +119,7 @@
     },
     "/api/v1/updateBalance/{user.id}/{balance}": {
       "get": {
+        "summary": "Update user balance",
         "operationId": "UpdateUserBalance",
         "responses": {
           "200": {
@@ -170,6 +184,10 @@
     }
   },
   "definitions": {
+    "AddUserRequest": {
+      "type": "object",
+      "title": "The request message for adding a user"
+    },
     "User": {
       "type": "object",
       "properties": {
@@ -181,6 +199,19 @@
           "format": "int32"
         }
       }
+    },
+    "UserRefundRequest": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "$ref": "#/definitions/User"
+        },
+        "refundItemCost": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "The request message for user refunds"
     },
     "protobufAny": {
       "type": "object",

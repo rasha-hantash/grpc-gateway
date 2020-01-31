@@ -35,6 +35,14 @@ func request_RefundService_AddUser_0(ctx context.Context, marshaler runtime.Mars
 	var protoReq AddUserRequest
 	var metadata runtime.ServerMetadata
 
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
 	msg, err := client.AddUser(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
@@ -43,6 +51,14 @@ func request_RefundService_AddUser_0(ctx context.Context, marshaler runtime.Mars
 func local_request_RefundService_AddUser_0(ctx context.Context, marshaler runtime.Marshaler, server RefundServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq AddUserRequest
 	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
 
 	msg, err := server.AddUser(ctx, &protoReq)
 	return msg, metadata, err
@@ -66,13 +82,17 @@ func request_RefundService_ListUser_0(ctx context.Context, marshaler runtime.Mar
 
 }
 
-var (
-	filter_RefundService_CreateUserRefund_0 = &utilities.DoubleArray{Encoding: map[string]int{"user": 0, "id": 1, "refundItemCost": 2}, Base: []int{1, 1, 1, 2, 0, 0}, Check: []int{0, 1, 2, 1, 3, 4}}
-)
-
 func request_RefundService_CreateUserRefund_0(ctx context.Context, marshaler runtime.Marshaler, client RefundServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq UserRefundRequest
 	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
 
 	var (
 		val string
@@ -101,13 +121,6 @@ func request_RefundService_CreateUserRefund_0(ctx context.Context, marshaler run
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "refundItemCost", err)
-	}
-
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_RefundService_CreateUserRefund_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
 	msg, err := client.CreateUserRefund(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -119,6 +132,14 @@ func local_request_RefundService_CreateUserRefund_0(ctx context.Context, marshal
 	var protoReq UserRefundRequest
 	var metadata runtime.ServerMetadata
 
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
 	var (
 		val string
 		ok  bool
@@ -146,10 +167,6 @@ func local_request_RefundService_CreateUserRefund_0(ctx context.Context, marshal
 
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "refundItemCost", err)
-	}
-
-	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_RefundService_CreateUserRefund_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
 	msg, err := server.CreateUserRefund(ctx, &protoReq)
@@ -344,7 +361,7 @@ func local_request_RefundService_RedeemRewards_0(ctx context.Context, marshaler 
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
 func RegisterRefundServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server RefundServiceServer) error {
 
-	mux.Handle("GET", pattern_RefundService_AddUser_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_RefundService_AddUser_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -371,7 +388,7 @@ func RegisterRefundServiceHandlerServer(ctx context.Context, mux *runtime.ServeM
 		return
 	})
 
-	mux.Handle("GET", pattern_RefundService_CreateUserRefund_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_RefundService_CreateUserRefund_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -472,7 +489,7 @@ func RegisterRefundServiceHandler(ctx context.Context, mux *runtime.ServeMux, co
 // "RefundServiceClient" to call the correct interceptors.
 func RegisterRefundServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client RefundServiceClient) error {
 
-	mux.Handle("GET", pattern_RefundService_AddUser_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_RefundService_AddUser_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -512,7 +529,7 @@ func RegisterRefundServiceHandlerClient(ctx context.Context, mux *runtime.ServeM
 
 	})
 
-	mux.Handle("GET", pattern_RefundService_CreateUserRefund_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_RefundService_CreateUserRefund_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)

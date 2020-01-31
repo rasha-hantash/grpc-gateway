@@ -6,7 +6,8 @@ service RefundService {
     // Add a user
     rpc AddUser(AddUserRequest) returns (User){
         option (google.api.http)= {
-            get: "/api/users"
+            post: "/api/users"
+            body: "*"
         };
     }
 
@@ -16,18 +17,24 @@ service RefundService {
             get: "/api/v1/users"
         };
     }
+
+    // Create user refund
     rpc CreateUserRefund(UserRefundRequest) returns (User){
         option (google.api.http)= {
-            get: "/api/v1/createRefund/{user.id}/{refundItemCost}"
-          
+            post: "/api/v1/createRefund/{user.id}/{refundItemCost}"
+            body: "*"
         };
     }
+
+    // Update user balance
     rpc UpdateUserBalance(UserBalanceRequest) returns (User){
         option (google.api.http)= {
             get: "/api/v1/updateBalance/{user.id}/{balance}"
         
         };
     }
+
+    // Redeem Rewards
     rpc RedeemRewards(UserRewardsRequest) returns (User){
         option (google.api.http)= {
             get: "/api/redeemRewards/{user.id}/{redemption}"
@@ -35,21 +42,25 @@ service RefundService {
         };
     }
 }
-
+// The request message for adding a user
 message AddUserRequest{}
 
+// The request message listing all the users
 message ListUsersRequest{}
 
+// The request message for user refunds 
 message UserRefundRequest{
     User user = 1;
     int32 refundItemCost =2;
 }
 
+// The request message for user balance
 message UserBalanceRequest{
     User user =1;
     int32 balance = 2;
 }
 
+// The request message for user rewards
 message UserRewardsRequest{
     User user =1;
     int32 redemption = 2;

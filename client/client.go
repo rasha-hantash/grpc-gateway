@@ -29,6 +29,8 @@ func main() {
 	// if len(os.Args) > 1 {
 	// 	name = os.Args[1]
 	// }
+
+	// Contact the server and print out its response 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
