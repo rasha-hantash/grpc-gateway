@@ -51,9 +51,8 @@ func startHTTP(){
 
 	// Serve the swagger,
 	mux := http.NewServeMux()
-	mux.Handle("/", rmux)
-
-	mux.HandleFunc("/swagger.json", serveSwagger)
+  mux.Handle("/",rmux)
+  mux.HandleFunc("/swagger.json", serveSwagger)
 	fs := http.FileServer(http.Dir("www/swagger-ui"))
 	mux.Handle("/swagger-ui/", http.StripPrefix("/swagger-ui", fs))
 

@@ -17,7 +17,7 @@ ifndef PROTOC_INSTALLED
 	$(error "protoc is not installed, please run 'brew install protobuf'")
 endif
 ifndef BINDATA_INSTALLED
-	@go get -u github.com/kevinburke/go-bindata/go-bindata@master
+	@go get -u github.com/kevinburke/go-bindata/go-bindata
 endif
 ifndef PGGG_INSTALLED
 	@go get -u github.com/grpc-ecosystem/grpc-gateway/...
@@ -44,6 +44,10 @@ build: generate
 	@rm -rf bin
 	@mkdir -p bin
 	@go generate ./...
-	@go build -o bin/server server/*.go
-	@go build -o bin/client client/*.go
+	#@go build -o bin/server server/*.go
+	#@go build -o bin/client client/*.go
+	@CGO_ENABLED=0 go build -o bin/server server/*.go
 	@echo "Success! Binaries can be found in 'bin' dir"
+
+image:
+	@docker image build --rm -f Dockerfile -t grpc-docker:latest .
