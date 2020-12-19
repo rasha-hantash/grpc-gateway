@@ -7,7 +7,3 @@ RUN go install /go/src/github.com/rasha-hantash/grpc-gateway/server
 ENTRYPOINT ["/go/bin/server"]
 EXPOSE 5566
 EXPOSE 8080
-
-
-########
-## TODO figure out how to connect to swaggerUI
