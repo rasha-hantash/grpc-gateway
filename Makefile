@@ -44,10 +44,10 @@ build: generate
 	@rm -rf bin
 	@mkdir -p bin
 	@go generate ./...
-	#@go build -o bin/server server/*.go
-	#@go build -o bin/client client/*.go
+	@go build -o bin/server server/*.go
+	@go build -o bin/client client/*.go
 	@CGO_ENABLED=0 go build -o bin/server server/*.go
 	@echo "Success! Binaries can be found in 'bin' dir"
 
 image:
-	@docker image build --rm -f Dockerfile -t grpc-docker:latest .
+	@docker build -t grpc-docker .

@@ -35,7 +35,7 @@ func startHTTP(){
 	defer cancel()
 
 	// Connect to the GRPC server
-	conn, err := grpc.Dial("localhost:5566", grpc.WithInsecure())
+	conn, err := grpc.Dial(":5566", grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("fail to dial: %v", err)
 	}
@@ -58,7 +58,7 @@ func startHTTP(){
 
 	log.Println("REST server ready...")
 	log.Println("Serving Swagger at: http://localhost:8080/swagger-ui/")
-	err = http.ListenAndServe("localhost:8080", mux)
+	err = http.ListenAndServe(":8080", mux)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -66,7 +66,9 @@ func startHTTP(){
 }
 
 func startGRPC() {
-	lis, err := net.Listen("tcp", "localhost:5566")
+	// TODO to run locally without container change code to
+	// localhost:5566
+	lis, err := net.Listen("tcp", ":5566")
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
