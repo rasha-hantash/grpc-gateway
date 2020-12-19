@@ -1,33 +1,17 @@
 # grpc-gateway
-## Build Binaries
-```bash
-make all 
-```
-
-## Run Binaries
-Start the server:
-```bash
-./bin/server
-```
-Then run the client a few times
-```bash
-./bin/client
-```
-Now visit ```http://localhost:8080/swagger-ui``` to make REST calls interactively. <br />
-Alternatively, use curl: <br />
-```bash
-curl -X GET "http://localhost:8080/api/users" -H "accept: application/json" ; echo
-```
-```bash
-curl -X GET "http://localhost:8080/api/v1/users" -H "accept: application/json" ; echo
-```
 ## Build Container
 ```bash
 make image
 ```
 ## Run Container
 ```bash
-docker run -p 5566:5566 grpc-docker:latest
+docker run -p 5566:5566 -p 8080:8080 grpc-docker:latest
+```
+
+## Run Binaries
+Run the client a few times
+```bash
+./bin/client
 ```
 
 Now visit ```http://localhost:8080/swagger-ui``` to make REST calls interactively. <br />
