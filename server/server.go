@@ -1,19 +1,20 @@
 package main
+
 import (
+	"context"
+	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	pb "github.com/rasha-hantash/grpc-gateway/rewardsrefund"
 	"google.golang.org/grpc"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"log"
-	"context"
 	"net"
-	"sync"
 	"net/http"
+	"sync"
 )
 
 // Backend implements the protobuf interface
 type Backend struct {
 	pb.UnimplementedRefundServiceServer
-	mu *sync.RWMutex
+	mu    *sync.RWMutex
 	users []*pb.User
 }
 
@@ -24,12 +25,11 @@ func New() *Backend {
 	}
 }
 
-
-func serveSwagger(w http.ResponseWriter, r *http.Request){
-	http.ServeFile(w,r,"www/swagger.json")
+func serveSwagger(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "www/swagger.json")
 }
 
-func startHTTP(){
+func startHTTP() {
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
@@ -51,8 +51,8 @@ func startHTTP(){
 
 	// Serve the swagger,
 	mux := http.NewServeMux()
-  mux.Handle("/",rmux)
-  mux.HandleFunc("/swagger.json", serveSwagger)
+	mux.Handle("/", rmux)
+	mux.HandleFunc("/swagger.json", serveSwagger)
 	fs := http.FileServer(http.Dir("www/swagger-ui"))
 	mux.Handle("/swagger-ui/", http.StripPrefix("/swagger-ui", fs))
 
@@ -77,7 +77,6 @@ func startGRPC() {
 	log.Println("gRPC server ready...")
 	grpcServer.Serve(lis)
 }
-
 
 func main() {
 	go startGRPC()

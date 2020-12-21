@@ -1,5 +1,6 @@
 syntax = "proto3";
 
+
 import "google/api/annotations.proto";
 // The refund service definition.
 service RefundService {
@@ -29,7 +30,7 @@ service RefundService {
     // Update user balance
     rpc UpdateUserBalance(UserBalanceRequest) returns (User){
         option (google.api.http)= {
-            get: "/api/v1/updateBalance/{user.id}/{balance}"
+            post: "/api/v1/updateBalance/{user.id}/{balance}"
         
         };
     }

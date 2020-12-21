@@ -1,12 +1,11 @@
-package main 
+package main
 
 import (
-		"context"
-		// "os"
-		"log"
-		"time"
-		pb "github.com/rasha-hantash/grpc-gateway/rewardsrefund"
+	"context"
+	pb "github.com/rasha-hantash/grpc-gateway/rewardsrefund"
 	"google.golang.org/grpc"
+	"log"
+	"time"
 )
 
 func main() {
@@ -14,7 +13,7 @@ func main() {
 	conn, err := grpc.DialContext(ctx, "localhost:5566",
 		grpc.WithInsecure(),
 		grpc.WithBlock(),
-	)	
+	)
 
 	cancelTimeoutFunc()
 	if err != nil {
@@ -25,12 +24,7 @@ func main() {
 	defer conn.Close()
 	c := pb.NewRefundServiceClient(conn)
 
-	// name := "Rasha"
-	// if len(os.Args) > 1 {
-	// 	name = os.Args[1]
-	// }
-
-	// Contact the server and print out its response 
+	// Contact the server and print out its response
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
@@ -39,5 +33,5 @@ func main() {
 		log.Fatalf("could not add user: %v", err)
 	}
 	log.Printf("User Id: " + r.GetId())
-	
+
 }

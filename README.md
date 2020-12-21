@@ -22,6 +22,10 @@ curl -X POST "http://localhost:8080/api/users" -H "accept: application/json" ; e
 ```bash
 curl -X GET "http://localhost:8080/api/v1/users" -H "accept: application/json" ; echo
 ```
+
+```bash
+curl -X POST "http://localhost:8080/api/v1/updateBalance/{user.id}/{balance}" -H "accept: application/json" ; echo
+```
 ## Regenerating code after proto file changes
 The gRPC and REST bindings plus swagger file are generated automatically from the proto file. The generated files are committed to the repo so you don't need to run these commands to try the code. <br />
 

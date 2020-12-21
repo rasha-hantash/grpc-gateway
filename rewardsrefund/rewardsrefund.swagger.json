@@ -118,7 +118,7 @@
       }
     },
     "/api/v1/updateBalance/{user.id}/{balance}": {
-      "get": {
+      "post": {
         "summary": "Update user balance",
         "operationId": "UpdateUserBalance",
         "responses": {
@@ -140,13 +140,6 @@
             "name": "balance",
             "in": "path",
             "required": true,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "user.accountBalance",
-            "in": "query",
-            "required": false,
             "type": "integer",
             "format": "int32"
           }

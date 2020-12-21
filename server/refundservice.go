@@ -2,15 +2,14 @@ package main
 
 import (
 	"context"
-	pb "github.com/rasha-hantash/grpc-gateway/rewardsrefund"
 	"github.com/gofrs/uuid"
+	pb "github.com/rasha-hantash/grpc-gateway/rewardsrefund"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
-
 // AddUser to the in-memory store.
-func (b *Backend) AddUser(ctx context.Context, _ *pb.AddUserRequest) (*pb.User, error){
+func (b *Backend) AddUser(ctx context.Context, _ *pb.AddUserRequest) (*pb.User, error) {
 	user := &pb.User{
 		Id: uuid.Must(uuid.NewV4()).String(),
 	}
@@ -19,10 +18,8 @@ func (b *Backend) AddUser(ctx context.Context, _ *pb.AddUserRequest) (*pb.User, 
 	return user, nil
 }
 
-
-// ListUsers lists all users in the store.
-func (b *Backend) ListUser( _ *pb.ListUsersRequest, srv pb.RefundService_ListUserServer)  error{
-	//b.mu.RLock ??
+// ListUser lists all users in the store.
+func (b *Backend) ListUser(_ *pb.ListUsersRequest, srv pb.RefundService_ListUserServer) error {
 
 	for _, user := range b.users {
 		err := srv.Send(user)
@@ -35,11 +32,11 @@ func (b *Backend) ListUser( _ *pb.ListUsersRequest, srv pb.RefundService_ListUse
 }
 
 // CreateUserRefund lists all users in the store.
-func (b *Backend) CreateUserRefund(ctx context.Context, req  *pb.UserRefundRequest) (*pb.User, error){
-	//b.mu.RLock ??
+func (b *Backend) CreateUserRefund(ctx context.Context, req *pb.UserRefundRequest) (*pb.User, error) {
+
 	var u *pb.User
 	for _, user := range b.users {
-		if user.Id == req.GetUser().GetId(){
+		if user.Id == req.GetUser().GetId() {
 			u = user
 			break
 		}
@@ -50,36 +47,34 @@ func (b *Backend) CreateUserRefund(ctx context.Context, req  *pb.UserRefundReque
 	return u, nil
 }
 
-
 // UpdateUserBalance lists all users in the store.
-func (b *Backend) UpdateUserBalance(ctx context.Context, req  *pb.UserBalanceRequest) (*pb.User, error){
-	//b.mu.RLock ??
+func (b *Backend) UpdateUserBalance(ctx context.Context, req *pb.UserBalanceRequest) (*pb.User, error) {
+
 	var u *pb.User
 	for _, user := range b.users {
-		if user.Id == req.GetUser().GetId(){
+		if user.Id == req.GetUser().GetId() {
 			u = user
 			break
 		}
 	}
 
-	u.AccountBalance = u.GetAccountBalance() + req.GetBalance()
+	u.AccountBalance = req.GetBalance()
 
 	return u, nil
 }
 
-
 // RedeemRewards lists all users in the store.
-func (b *Backend) RedeemRewards(ctx context.Context, req  *pb.UserRewardsRequest) (*pb.User, error){
-	//b.mu.RLock ??
+func (b *Backend) RedeemRewards(ctx context.Context, req *pb.UserRewardsRequest) (*pb.User, error) {
+
 	var u *pb.User
 	for _, user := range b.users {
-		if user.Id == req.GetUser().GetId(){
+		if user.Id == req.GetUser().GetId() {
 			u = user
 			break
 		}
 	}
 
-	if req.GetRedemption() > u.AccountBalance{
+	if req.GetRedemption() > u.AccountBalance {
 		return u, status.Errorf(codes.InvalidArgument, "Not enough balance to redeem")
 	}
 
@@ -87,5 +82,3 @@ func (b *Backend) RedeemRewards(ctx context.Context, req  *pb.UserRewardsRequest
 
 	return u, nil
 }
-
-
